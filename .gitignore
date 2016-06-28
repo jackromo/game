@@ -1,4 +1,5 @@
-.idea
-out
-resources/*
+.idea/
+out/
 *.iml
+resources/
+src/
