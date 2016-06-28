@@ -1,5 +1,7 @@
 package net.parseltounge.entities.living_ents;
 
+import net.parseltounge.components.ai_comp.EnemyAI;
+import net.parseltounge.components.ai_comp.EnemyAIUpdater;
 import net.parseltounge.components.phys_comp.Hitbox;
 import net.parseltounge.entities.Entity;
 import net.parseltounge.entities.wall_ents.WallEntity;
@@ -9,14 +11,11 @@ import net.parseltounge.components.graph_comp.ImgManager;
 import java.awt.*;
 
 public class EnemyEntity extends LivingEntity {
-    //Enemy class in game.
-    //Will eventually be abstract, parent of all enemy classes
 
     private ImgManager im_man;  //Image manager
+    private EnemyAIUpdater updater;
 
-    //Methods
-
-    public EnemyEntity(int x, int y) {  //Constructor
+    public EnemyEntity(int x, int y) {
         health = 50;
         x_pos = x;
         y_pos = y;
@@ -27,6 +26,7 @@ public class EnemyEntity extends LivingEntity {
         im_man.load_image("resources/enemy_img.png", "enemy_img");
         current_img = im_man.get_img("enemy_img");
 
+        updater = new EnemyAIUpdater(EnemyAI.STILL);    // default AI = stand still
         hitbox = new Hitbox(x_pos, y_pos, 100, 100);
     }
 
@@ -35,16 +35,14 @@ public class EnemyEntity extends LivingEntity {
     }
 
     public void update() {
+
+        updater.update_enemy(this);
+
         x_pos += dx;  //Update position with respect to speed
         y_pos += dy;
 
         if(dy < 15)
             dy += 1; //Accelerate
-
-
-        //Temporary AI for enemy, will be more intricate later
-        if(x_pos < 375 || x_pos > 425) //Move left to right in between 500 and 800
-            dx = -dx;
 
         hitbox.setLocation(x_pos, y_pos);  //Update hitbox
 
@@ -53,6 +51,10 @@ public class EnemyEntity extends LivingEntity {
             health = 0;
             dead = true;
         }
+    }
+
+    public void set_updater(EnemyAI new_ai) {
+        updater.set_chosen_ai(new_ai);
     }
 
     public AttackEntity get_attack() {  //get current attack

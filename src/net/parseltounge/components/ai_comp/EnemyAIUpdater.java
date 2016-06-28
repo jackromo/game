@@ -2,17 +2,22 @@ package net.parseltounge.components.ai_comp;
 
 import net.parseltounge.entities.living_ents.EnemyEntity;
 
-/**
- * Created by Jack on 6/28/2016.
- */
 public class EnemyAIUpdater {
 
     private EnemyAI chosenAI;
 
-    void update_enemy(EnemyEntity enemy) {
+    public EnemyAIUpdater(EnemyAI chosen_ai) {
+        set_chosen_ai(chosen_ai);
+    }
+
+    public void set_chosen_ai(EnemyAI chosen_ai) {
+        chosenAI = chosen_ai;
+    }
+    
+    public void update_enemy(EnemyEntity enemy) {
         switch(chosenAI) {
             case STILL:
-                update_chase_still(enemy);
+                update_still(enemy);
                 break;
             case WALK_NO_TURN:
                 update_walk_no_turn(enemy);
@@ -28,19 +33,19 @@ public class EnemyAIUpdater {
         }
     }
 
-    void update_still(EnemyEntity enemy) {
+    private void update_still(EnemyEntity enemy) {
         //
     }
 
-    void update_walk_no_turn(EnemyEntity enemy) {
+    private void update_walk_no_turn(EnemyEntity enemy) {
         //
     }
 
-    void update_walk_turn(EnemyEntity enemy) {
+    private void update_walk_turn(EnemyEntity enemy) {
         //
     }
 
-    void update_chase_still(EnemyEntity enemy) {
+    private void update_chase_still(EnemyEntity enemy) {
         //
     }
 
