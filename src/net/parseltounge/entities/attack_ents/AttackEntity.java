@@ -8,9 +8,6 @@ import java.awt.image.BufferedImage;
 import net.parseltounge.components.phys_comp.Hitbox;
 import net.parseltounge.entities.Entity;
 
-/**
- * Created by Jack on 9/11/2014.
- */
 public class AttackEntity extends Entity {
     //Any attack in game has a hitbox, updates and renders, so is an entity.
     //eg. bullet, punch, fireball, etc.

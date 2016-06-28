@@ -1,7 +1,4 @@
-package net.parseltounge.game_app; /**
- * Created by Jack on 9/6/2014.
- * Game app in Java.
- */
+package net.parseltounge.game_app;
 
 import javax.swing.*;  //For Swing graphics
 import java.awt.*;

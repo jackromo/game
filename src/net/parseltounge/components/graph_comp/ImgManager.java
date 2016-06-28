@@ -1,6 +1,4 @@
-package net.parseltounge.components.graph_comp; /**
- * Created by Jack on 9/6/2014.
- */
+package net.parseltounge.components.graph_comp;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

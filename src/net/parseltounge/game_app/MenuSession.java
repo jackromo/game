@@ -2,9 +2,6 @@ package net.parseltounge.game_app;
 
 import java.awt.image.BufferStrategy;
 
-/**
- * Created by Jack on 9/13/2014.
- */
 public class MenuSession extends Session {
     //Main menu session. Game starts up with this.
 

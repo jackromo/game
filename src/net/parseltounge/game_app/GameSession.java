@@ -13,9 +13,6 @@ import net.parseltounge.entities.living_ents.LivingEntity;
 import net.parseltounge.entities.living_ents.PlayerEntity;
 import org.w3c.dom.css.Rect;
 
-/**
- * Created by Jack on 9/10/2014.
- */
 public class GameSession extends Session {
     //Current session of playing game.
     //Will have a MenuSession for main menu, PausedSession for game being paused, etc.

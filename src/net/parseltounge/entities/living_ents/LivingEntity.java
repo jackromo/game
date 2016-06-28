@@ -1,7 +1,4 @@
 package net.parseltounge.entities.living_ents;
-/**
- * Created by Jack on 9/10/2014.
- */
 
 import net.parseltounge.entities.Entity;
 import net.parseltounge.entities.wall_ents.TileEntity;

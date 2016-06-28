@@ -1,9 +1,5 @@
 package net.parseltounge.game_app;
 
-/**
- * Created by Jack on 9/7/2014.
- */
-
 import net.parseltounge.components.graph_comp.ImgManager;
 import net.parseltounge.entities.living_ents.EnemyEntity;
 import net.parseltounge.entities.Entity;

@@ -1,6 +1,4 @@
-package net.parseltounge.entities.living_ents; /**
- * Created by Jack on 9/6/2014.
- */
+package net.parseltounge.entities.living_ents;
 
 import net.parseltounge.components.phys_comp.Hitbox;
 import net.parseltounge.entities.Entity;
@@ -22,7 +20,15 @@ public class PlayerEntity extends LivingEntity {
     private ImgManager jumping_im_man;  //Manages images for jumping
     private ImgManager punching_im_man;  //Manages images for jumping
 
-    private String state;  //State of player, eg. 'standing', 'walking', 'punching', etc.
+    private enum PlayerState {
+        STANDING,
+        WALKING,
+        JUMPING,
+        PUNCHING,
+        HURT
+    }
+
+    private PlayerState state;  //State of player, eg. 'standing', 'walking', 'punching', etc.
 
     private AttackEntity punch; //Punch attack
 
@@ -53,7 +59,7 @@ public class PlayerEntity extends LivingEntity {
         dx = 0;
         dy = 0;
 
-        state = "standing";  //Currently standing
+        state = PlayerState.STANDING;  //Currently standing
 
         punch_len = 10;  //Punch lasts 10 updates
         walk_img_len = 10;
@@ -95,7 +101,7 @@ public class PlayerEntity extends LivingEntity {
     }
 
     public AttackEntity get_attack() {  //Get current attack.
-        if(state.equals("punching") && update_counter - punch_start >= punch_len) {
+        if(state == PlayerState.STANDING && update_counter - punch_start >= punch_len) {
             punch.update();  //Make sure punch is updated to most current state
             return punch;
         }
@@ -106,26 +112,26 @@ public class PlayerEntity extends LivingEntity {
     //State initialisation functions when DFA state changes
 
     void stand_init() {
-        state = "standing";
+        state = PlayerState.STANDING;
         current_img = im_man.get_img("player_img");
         dx = 0;
     }
 
     void punch_init() {
-        state = "punching";
+        state = PlayerState.PUNCHING;
         punching_im_man.set_current_img(0);
         punch_start = update_counter;
         dx = 0;
     }
 
     void jump_init() {
-        state = "jumping";
+        state = PlayerState.JUMPING;
         jumping_im_man.set_current_img(0);
         dy = -15;
     }
 
     void walk_init() {
-        state = "walking";
+        state = PlayerState.WALKING;
         walking_im_man.set_current_img(0);
         walk_start = update_counter;
 
@@ -138,7 +144,7 @@ public class PlayerEntity extends LivingEntity {
     }
 
     void hurt_init() {
-        state = "hurt";
+        state = PlayerState.HURT;
         hurt_start = update_counter;
         invincible = true;
         if(left_facing) {
@@ -160,7 +166,7 @@ public class PlayerEntity extends LivingEntity {
 
         //Update state of player AI DFA
         switch(state) {
-            case "standing":  //If standing, can change to walking, jumping or punching
+            case STANDING:  //If standing, can change to walking, jumping or punching
                 if((Game.left_pressed || Game.right_pressed) && !(Game.left_pressed && Game.right_pressed)) {
                     //If only one of left or right pressed right; if both, stay still
                     walk_init();
@@ -170,7 +176,7 @@ public class PlayerEntity extends LivingEntity {
                     punch_init();
                 }
                 break;
-            case "walking":  //If walking, can change to jumping, punching or standing
+            case WALKING:  //If walking, can change to jumping, punching or standing
                 if(Game.space_pressed && on_ground) {  //Jump
                     jump_init();
                 } else if(!on_ground) {  //If falls off cliff, jumping but without upwards velocity
@@ -194,7 +200,7 @@ public class PlayerEntity extends LivingEntity {
                     stand_init();
                 }
                 break;
-            case "jumping":  //If jumping, can change to standing
+            case JUMPING:  //If jumping, can change to standing
                 if(on_ground) {
                     stand_init();
                 } else if(Game.left_pressed) {
@@ -205,12 +211,12 @@ public class PlayerEntity extends LivingEntity {
                     dx = 0;
                 }
                 break;
-            case "punching":  //If punching, can change to standing
+            case PUNCHING:  //If punching, can change to standing
                 if((update_counter - punch_start) > punch_len) {
                     stand_init();
                 }
                 break;
-            case "hurt":  //If hurt, can change to standing
+            case HURT:  //If hurt, can change to standing
                 if(on_ground) {
                     stand_init();
                 }
@@ -245,29 +251,29 @@ public class PlayerEntity extends LivingEntity {
 
 
         //Update current_img according to DFA state
-        if(state.equals("hurt")) {
+        if(state == PlayerState.HURT) {
             current_img = im_man.get_img("player_img");  //Standing for now
             if(right_facing)
                 current_img = tf_hor_flip.filter(current_img, null);  //Make sure facing right way
         }
-        else if(state.equals("walking")) {  //If walking, update image
+        else if(state == PlayerState.WALKING) {  //If walking, update image
             if((update_counter - walk_start) % walk_img_len == 0) {  //Update to next image after a set time
                 current_img = walking_im_man.get_next_img();
                 if (left_facing)
                     current_img = tf_hor_flip.filter(current_img, null);  //Make sure facing right way
             }
         }
-        else if(state.equals("standing")) {  //If standing, update image
+        else if(state == PlayerState.STANDING) {  //If standing, update image
             current_img = im_man.get_img("player_img");
             if(right_facing)
                 current_img = tf_hor_flip.filter(current_img, null);  //Make sure facing right way
         }
-        else if(state.equals("jumping")) {  //If jumping, update image
+        else if(state == PlayerState.JUMPING) {  //If jumping, update image
             current_img = im_man.get_img("player_img");  //Standing for now
             if(right_facing)
                 current_img = tf_hor_flip.filter(current_img, null);  //Make sure facing right way
         }
-        else if(state.equals("punching")) {  //If punching, update image
+        else if(state == PlayerState.PUNCHING) {  //If punching, update image
             current_img = im_man.get_img("player_img");  //Standing for now
             if(right_facing)
                 current_img = tf_hor_flip.filter(current_img, null);  //Make sure facing right way
@@ -321,7 +327,7 @@ public class PlayerEntity extends LivingEntity {
                 wall_collision((WallEntity) other);  //Method defined in LivingEntity
         }
         else if(other instanceof EnemyEntity) {
-            if(!state.equals("hurt") && !invincible) {
+            if(state != PlayerState.HURT && !invincible) {
                 hurt_init();
                 health -= 10;  //For now, lose 10 health per enemy collision
                 hurt_start = update_counter;  //Start being invincible
@@ -331,7 +337,7 @@ public class PlayerEntity extends LivingEntity {
             AttackEntity oth = (AttackEntity) other;
             if(oth.get_source() instanceof EnemyEntity) {  //Only hurt if from enemy, cannot get hurt by own attacks
                 //hit by enemy
-                if(!state.equals("hurt") && !invincible) {
+                if(state != PlayerState.HURT && !invincible) {
                     hurt_init();
                     health -= oth.get_damage();
                     hurt_start = update_counter;  //Start being invincible

@@ -1,9 +1,5 @@
 package net.parseltounge.entities.living_ents;
 
-/**
- * Created by Jack on 9/9/2014.
- */
-
 import net.parseltounge.components.phys_comp.Hitbox;
 import net.parseltounge.entities.Entity;
 import net.parseltounge.entities.wall_ents.WallEntity;

@@ -1,6 +1,4 @@
-package net.parseltounge.game_app; /**
- * Created by Jack on 9/6/2014.
- */
+package net.parseltounge.game_app;
 
 import java.awt.*;
 import java.awt.image.*;  //For BufferedImage

@@ -5,9 +5,6 @@ import net.parseltounge.components.phys_comp.Hitbox;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-/**
- * Created by Jack on 9/6/2014.
- */
 public abstract class Entity {
     //Abstract entity class
     //Contains x-y coordinates, hitbox, current image to draw, and speed
