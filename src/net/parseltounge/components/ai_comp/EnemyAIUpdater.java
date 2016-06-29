@@ -43,9 +43,9 @@ public class EnemyAIUpdater {
 
     private void update_walk_no_turn(EnemyEntity enemy) {
         if(enemy.facing_left) {
-            enemy.set_dx(-5);
+            enemy.set_dx(-enemy.get_max_dx());
         } else {
-            enemy.set_dx(5);
+            enemy.set_dx(enemy.get_max_dx());
         }
     }
 
@@ -53,9 +53,9 @@ public class EnemyAIUpdater {
         if(enemy.facing_wall)
             enemy.facing_left = !enemy.facing_left;
         if(enemy.facing_left) {
-            enemy.set_dx(-5);
+            enemy.set_dx(-enemy.get_max_dx());
         } else {
-            enemy.set_dx(5);
+            enemy.set_dx(enemy.get_max_dx());
         }
     }
 
@@ -68,9 +68,9 @@ public class EnemyAIUpdater {
                 // preset chasing distance is 1000
                 if(dist_squared < Math.pow(1000, 2)) {
                     if(enemy.get_x() < e.get_x()) {
-                        enemy.set_dx(5);
+                        enemy.set_dx(enemy.get_max_dx());
                     } else {
-                        enemy.set_dx(-5);
+                        enemy.set_dx(-enemy.get_max_dx());
                     }
                 }
                 break;

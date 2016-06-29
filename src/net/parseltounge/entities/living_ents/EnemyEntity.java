@@ -23,15 +23,20 @@ public class EnemyEntity extends LivingEntity {
 
     private AffineTransformOp tf_hor_flip;
 
-    public EnemyEntity(int x, int y) {
+    private int max_dx;
+    private int max_dy;
+
+    public EnemyEntity(int x, int y, EnemyAI chosen_ai, int x_speed, String img_path) {
         health = 50;
         x_pos = x;
         y_pos = y;
-        dx = 5;
+        dx = 0;
         dy = 0;
+        max_dx = x_speed;
+        max_dy = 15;
 
         im_man = new ImgManager();
-        im_man.load_image("resources/enemy_img.png", "enemy_img");
+        im_man.load_image(img_path, "enemy_img");
         current_img = im_man.get_img("enemy_img");
 
         //Create transform op to flip player image when turning around
@@ -40,7 +45,7 @@ public class EnemyEntity extends LivingEntity {
         tf.translate(-current_img.getWidth(), 0);
         tf_hor_flip = new AffineTransformOp(tf, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 
-        updater = new EnemyAIUpdater(EnemyAI.STILL);    // default AI = stand still
+        updater = new EnemyAIUpdater(chosen_ai);    // default AI = stand still
         hitbox = new Hitbox(x_pos, y_pos, 100, 100);
     }
 
@@ -55,13 +60,17 @@ public class EnemyEntity extends LivingEntity {
         x_pos += dx;  //Update position with respect to speed
         y_pos += dy;
 
-        if(dy < 15)
+        if(dy < max_dy)
             dy += 1; //Accelerate
 
         if(!facing_left)
             tf_hor_flip.filter(current_img, null);  // Flip image appropriately
 
         hitbox.setLocation(x_pos, y_pos);  //Update hitbox
+
+        if(dx != 0) {   // update current image if moving
+            current_img = im_man.get_next_img();
+        }
 
         if(health <= 0) {
             //Enemy death logic
@@ -78,6 +87,10 @@ public class EnemyEntity extends LivingEntity {
 
     public AttackEntity get_attack() {  //get current attack
         return null;
+    }
+
+    public int get_max_dx() {
+        return max_dx;
     }
 
     public void collision(Entity other) {  //Handle collisions with other entities
