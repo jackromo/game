@@ -10,6 +10,7 @@ import net.parseltounge.game_app.Game;
 import java.awt.*;
 import java.awt.image.*;
 import java.awt.geom.*;
+import java.util.ArrayList;
 
 public class PlayerEntity extends LivingEntity {
     //Player's entity in game.
@@ -160,7 +161,7 @@ public class PlayerEntity extends LivingEntity {
         g.drawRect(x_pos, y_pos, hitbox.width, hitbox.height);
     }
 
-    public void update() {  //Update state of entity
+    public void update(ArrayList<Entity> ents) {  //Update state of entity
         //Increase update counter
         update_counter++;
 

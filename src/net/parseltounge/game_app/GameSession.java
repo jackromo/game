@@ -83,7 +83,7 @@ public class GameSession extends Session {
 
         //Update all entities
         for(Entity e : active_ents) {
-            e.update();
+            e.update(ent_array);
         }
 
 

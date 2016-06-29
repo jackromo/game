@@ -4,6 +4,7 @@ import net.parseltounge.components.phys_comp.Hitbox;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public abstract class Entity {
     //Abstract entity class
@@ -70,5 +71,5 @@ public abstract class Entity {
 
     public abstract void draw(Graphics g);  //Draw image to g
 
-    public abstract void update();  //Update entity state
+    public abstract void update(ArrayList<Entity> ents);  //Update entity state
 }

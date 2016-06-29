@@ -11,6 +11,7 @@ import net.parseltounge.components.graph_comp.ImgManager;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
+import java.util.ArrayList;
 
 public class EnemyEntity extends LivingEntity {
 
@@ -47,7 +48,7 @@ public class EnemyEntity extends LivingEntity {
         g.drawImage(current_img, x_pos, y_pos, 100, 100, null);
     }
 
-    public void update() {
+    public void update(ArrayList<Entity> ents) {
 
         updater.update_enemy(this);
 
