@@ -13,7 +13,7 @@ public class EnemyAIUpdater {
     public void set_chosen_ai(EnemyAI chosen_ai) {
         chosenAI = chosen_ai;
     }
-    
+
     public void update_enemy(EnemyEntity enemy) {
         switch(chosenAI) {
             case STILL:
@@ -34,19 +34,29 @@ public class EnemyAIUpdater {
     }
 
     private void update_still(EnemyEntity enemy) {
-        //
+        enemy.dx = 0;
     }
 
     private void update_walk_no_turn(EnemyEntity enemy) {
-        //
+        if(enemy.facing_left) {
+            enemy.dx = -5;
+        } else {
+            enemy.dx = 5;
+        }
     }
 
     private void update_walk_turn(EnemyEntity enemy) {
-        //
+        if(enemy.facing_wall)
+            enemy.facing_left = !enemy.facing_left;
+        if(enemy.facing_left) {
+            enemy.dx = -5;
+        } else {
+            enemy.dx = 5;
+        }
     }
 
     private void update_chase_still(EnemyEntity enemy) {
-        //
+        // need access to player's x/y coordinates
     }
 
 }
