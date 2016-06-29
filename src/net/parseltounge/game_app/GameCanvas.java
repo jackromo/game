@@ -31,7 +31,7 @@ public class GameCanvas extends Canvas{
         render_thread = new Thread(new RenderRunnable());
         this.setBounds(0, 0, Game.G_WIDTH, Game.G_HEIGHT);
 
-        session = new GameSession();
+        session = new GameSession(new Level("demo_map.tmx"));
     }
 
     public void start_game() {  //Start game loop (run anim_thread)

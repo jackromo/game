@@ -22,24 +22,24 @@ public class GameSession extends Session {
 
     private Level level;  //Current level played
 
-    private int camera_x;  //Location of top-left corner of camera
+    private int camera_x;  // top-left camera xy coords
     private int camera_y;
 
-    private boolean game_over;  //If game is over, checked by main game loop
+    private boolean game_over;
     private boolean paused;
 
     //Methods
 
-    public GameSession() {  //Constructor
+    public GameSession(Level new_level) {  //Constructor
         ent_array = new ArrayList<Entity>();
         active_ents = new ArrayList<Entity>();
 
-        level = new Level("demo_map.tmx");  //Level to be played in game
+        level = new_level;
         player_ent = level.get_player_ent();
 
-        for(Entity e : level.get_ents()) {  //Get all entities stored in level for current use
+        for(Entity e : level.get_ents()) {
             ent_array.add(e);
-            if(e instanceof LivingEntity) {  //Will eventually check for any entity which is active, eg. block which changes color
+            if(e instanceof LivingEntity) {
                 active_ents.add(e);
             }
         }
@@ -174,7 +174,7 @@ public class GameSession extends Session {
     private void handle_player_death() {
         if(!active_ents.contains(player_ent)) {  //Player does not exist, must have died, end game
             game_over = true;
-            next_session = new GameSession();  //Create new game session (restart)
+            next_session = new GameSession(level);  //Create new game session (restart)
             //Will later give a GameOverSession or something similar
         }
     }
