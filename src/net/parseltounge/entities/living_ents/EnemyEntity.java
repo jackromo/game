@@ -50,7 +50,7 @@ public class EnemyEntity extends LivingEntity {
 
     public void update(ArrayList<Entity> ents) {
 
-        updater.update_enemy(this);
+        updater.update_enemy(this, ents);
 
         x_pos += dx;  //Update position with respect to speed
         y_pos += dy;
