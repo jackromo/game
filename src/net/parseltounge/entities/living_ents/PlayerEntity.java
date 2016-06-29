@@ -162,16 +162,13 @@ public class PlayerEntity extends LivingEntity {
     }
 
     public void update(ArrayList<Entity> ents) {  //Update state of entity
-        //Increase update counter
         update_counter++;
 
         update_state();
 
-        //Change position of player via speed
         x_pos += dx;
         y_pos += dy;
 
-        //Simulate gravity acceleration
         if(dy < max_dy)
             dy += 1;
 
@@ -281,12 +278,9 @@ public class PlayerEntity extends LivingEntity {
                 invincible = false;
             else if ((update_counter - hurt_start) % 4 == 0) {
                 //Change between invisible and visible every 4 updates, flashing
-                if ((update_counter - hurt_start) % 8 == 0) {  //Visible every 8 updates
-                    current_img = im_man.get_img("player_img");  //Make visible
-                    if(!left_facing)  //Make sure image is facing right way
-                        current_img = tf_hor_flip.filter(current_img, null);
-                } else {  //Invisible for every 4 updates not covered above (ie. every other 4 updates)
-                    current_img = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);  //Reset image to transparent rectangle
+                if ((update_counter - hurt_start) % 8 == 0) {  //Invisible every other 4 updates
+                    // to become invisible, draw transparent rectangle instead of sprite decided above
+                    current_img = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
                     Graphics2D g = (Graphics2D) current_img.getGraphics();
                     g.setComposite(AlphaComposite.Clear);  //Draw transparent rectangle over it
                     g.fillRect(x_pos, y_pos, 100, 100);
