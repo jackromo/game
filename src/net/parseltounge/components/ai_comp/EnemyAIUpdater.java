@@ -42,7 +42,7 @@ public class EnemyAIUpdater {
     }
 
     private void update_walk_no_turn(EnemyEntity enemy) {
-        if(enemy.facing_left) {
+        if(enemy.left_facing) {
             enemy.set_dx(-enemy.get_max_dx());
         } else {
             enemy.set_dx(enemy.get_max_dx());
@@ -51,8 +51,8 @@ public class EnemyAIUpdater {
 
     private void update_walk_turn(EnemyEntity enemy) {
         if(enemy.facing_wall)
-            enemy.facing_left = !enemy.facing_left;
-        if(enemy.facing_left) {
+            enemy.left_facing = !enemy.left_facing;
+        if(enemy.left_facing) {
             enemy.set_dx(-enemy.get_max_dx());
         } else {
             enemy.set_dx(enemy.get_max_dx());

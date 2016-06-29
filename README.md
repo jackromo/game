@@ -1,6 +1,6 @@
 # Game App
 
-This is a 2d platform game engine. Uses Tiled for levels.
+This is a 2d platform game engine.
 
 (NB: The game requires a 'resources' file at root for all images, sounds and levels, which has not been included here.)
 
@@ -23,5 +23,9 @@ This project is licensed under the [MIT License](LICENSE).
 * Sound managers for sound effects and game music
 * Image sequences for enemies, which can be selected from when creating enemies in Tiled
 * Pause session and menu session
-* Multiple levels and boss battles
-* Cutscenes and dialogue boxes (cutscene session and dialogue session?)
+
+## Notes
+
+Uses Tiled for levels.
+
+All sprites should be facing leftwards.

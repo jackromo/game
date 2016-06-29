@@ -18,13 +18,13 @@ public class EnemyEntity extends LivingEntity {
     private ImgManager im_man;  //Image manager
     private EnemyAIUpdater updater;
 
-    public boolean facing_left;
+    public boolean left_facing;
     public boolean facing_wall; // used by AI to check if just hit a wall horizontally
 
     private AffineTransformOp tf_hor_flip;
 
-    private int max_dx;
-    private int max_dy;
+    private final int max_dx;
+    private final int max_dy;
 
     public EnemyEntity(int x, int y, EnemyAI chosen_ai, int x_speed, String img_path) {
         health = 50;
@@ -63,8 +63,15 @@ public class EnemyEntity extends LivingEntity {
         if(dy < max_dy)
             dy += 1; //Accelerate
 
-        if(!facing_left)
-            tf_hor_flip.filter(current_img, null);  // Flip image appropriately
+        if(dx < 0 && !left_facing) {
+            left_facing = true;  //Only flip once
+            current_img = tf_hor_flip.filter(current_img, null); //Flip image to left
+        }
+        else if(dx > 0 && left_facing) {
+            left_facing = false;
+            current_img = tf_hor_flip.filter(current_img, null); //Flip back
+        }
+
 
         hitbox.setLocation(x_pos, y_pos);  //Update hitbox
 
