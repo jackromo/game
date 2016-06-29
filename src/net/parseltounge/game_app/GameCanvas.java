@@ -21,8 +21,6 @@ public class GameCanvas extends Canvas{
 
     private volatile Session session;  //Currently playing session
 
-    //Methods
-
     public GameCanvas() {  //Constructor
         frame_time = 1000 / Game.G_FPS;  //Period in milliseconds = (1/Frequency) * 1000
         update_time = 1000 / Game.G_UPS;
@@ -48,7 +46,7 @@ public class GameCanvas extends Canvas{
         }
     }
 
-    class UpdateRunnable implements Runnable {
+    private class UpdateRunnable implements Runnable {
         //Update loop, runs in separate thread.
 
         public void run() {
@@ -83,7 +81,7 @@ public class GameCanvas extends Canvas{
         }
     }
 
-    class RenderRunnable implements Runnable {
+    private class RenderRunnable implements Runnable {
         //Render-paint loop, runs in separate thread.
 
         public void run() {

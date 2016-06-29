@@ -7,10 +7,6 @@ import java.awt.event.*;
 public class Game {
     //Main Game class, responsible for creating and managing canvas and event handlers
 
-    JFrame frame;  //Contains all game components
-    JPanel panel;  //Contains GameCanvas
-    GameCanvas g_canvas;  //Actual game's image
-
     public static final int G_WIDTH = 800;  //Width and height of game window
     public static final int G_HEIGHT = 600;
     public static final int G_FPS = 100;  //Frames per second and Updates per second of game
@@ -26,14 +22,14 @@ public class Game {
         Game g = new Game();
     }
 
-    public Game() {  //Game constructor
-        frame = new JFrame("Game Trial");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Allow user to close window with close button
+    public Game() {
+        JFrame frame = new JFrame("Game");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //Allow user to close window with close button
 
-        panel = new JPanel();   //Will contain game canvas
+        JPanel panel = new JPanel();   //Will contain game canvas
         panel.setPreferredSize(new Dimension(800, 600));  //Set size of panel
 
-        g_canvas = new GameCanvas();  //Create actual game canvas
+       GameCanvas g_canvas = new GameCanvas();  //Create actual game canvas
         g_canvas.addKeyListener(new G_KeyListener());  //Add listener for key presses
 
         panel.add(g_canvas);
@@ -50,7 +46,7 @@ public class Game {
 
     //Event listeners
 
-    class G_KeyListener implements KeyListener {
+    private class G_KeyListener implements KeyListener {
         @Override
         public void keyPressed(KeyEvent e) {  //Checks for pressed keys and responds appropriately
             int key_code = e.getKeyCode();  //Get key pressed
