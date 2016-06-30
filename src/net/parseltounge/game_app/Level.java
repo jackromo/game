@@ -27,7 +27,7 @@ public class Level {
 
     private BufferedImage background;  //Single image background
 
-    ImgManager tileset;
+    private ImgManager tileset;
 
     public Level(String map_name) {  //Constructor
         walls = new ArrayList<TileEntity>();
@@ -96,11 +96,11 @@ public class Level {
         for(current_height = 0; current_height < level_height; current_height++) {
             for (current_width = 0; current_width < level_width; current_width++) {
                 Node tile = tiles.item(current_width + (current_height * level_width));  //Retrieve tile
-
+                NamedNodeMap tile_attrs = tile.getAttributes();
                 if (tile instanceof Element) {  //Only if the node is an element, and thus a tile
-                    if (!tile.getAttributes().getNamedItem("gid").getNodeValue().equals("0")) {  //If not empty
-                        //Get tile's image, then pass to wall entity
-                        int gid = Integer.parseInt(tile.getAttributes().getNamedItem("gid").getNodeValue()) - 1;  //Get id of tile image (-1 because id's start at 1)
+                    if (!tile_attrs.getNamedItem("gid").getNodeValue().equals("0")) {  //If not empty
+                        //Get tile's image (-1 because id's start at 1), then pass to wall entity
+                        int gid = Integer.parseInt(tile_attrs.getNamedItem("gid").getNodeValue()) - 1;
                         BufferedImage image = tileset.get_img(gid);
                         //Tile has x, y, width, height, image, and id
                         walls.add(new TileEntity(

@@ -36,12 +36,13 @@ public class PlayerEntity extends LivingEntity {
     private AffineTransformOp tf_hor_flip;  //Transform op to flip player image horizontally
 
     private int punch_start;  //Which update punch started at, keep track of how many updates punch has existed for
-    private int punch_len;  //Number of updates a punch lasts for
+    private int punch_len = 10;  //Number of updates a punch lasts for
     private int hurt_start;  //Which update being hurt started at
-    private int hurt_len;  //Length hurt for
-
-    private int walk_img_len = 10;  //Length an image is displayed for before next one while walking
+    private final int hurt_len = 28;  //Length hurt for
     private int walk_start = 0;  //When walk sequence started
+    private final int walk_len = 10;  //Length an image is displayed for before next one while walking
+    private int jump_start;
+    private final int jump_len = 5;
 
     private final int max_dx = 5;   // Largest allowed speeds
     private final int max_dy = 15;
@@ -62,16 +63,12 @@ public class PlayerEntity extends LivingEntity {
 
         state = PlayerState.STANDING;  //Currently standing
 
-        punch_len = 10;  //Punch lasts 10 updates
-        walk_img_len = 10;
-        hurt_len = 28;
         on_ground = false;
         left_facing = true;  //Start off facing left
 
         im_man = new ImgManager();  //Will later on simply be a reference to currently used image manager
 
         //Initialize all image managers
-        // NB: make sure all sprites face left
         walking_im_man = new ImgManager();
         jumping_im_man = new ImgManager();
         punching_im_man = new ImgManager();
@@ -79,13 +76,11 @@ public class PlayerEntity extends LivingEntity {
         punch = new AttackEntity(this, 20);  //punch comes from player and deals 20 damage
         punch.get_hitbox().setBounds(x_pos, y_pos, 30, 30);  //Set size of attack
 
-        //Uncomment these two lines when walking and jumping atlases are made
-        walking_im_man.load_atlas("resources/player_walk.png", "walking", 102, 148, 6, 1);
-        //jumping_im_man.load_atlas("asdf", "jumping", 32, 32, 5, 1);
-        //punching_im_man.load_atlas("asdf", "punching", 32, 32, 5, 1);
-
-        im_man.load_image("resources/player_img.png", "player_img");  //Load sprite image
-        current_img = im_man.get_img("player_img");
+        im_man.load_atlas("resources/player_walk.png", "walking", 102, 148, 6, 1);
+        im_man.load_atlas("resources/player_jump.png", "jumping", 32, 32, 5, 1);
+        im_man.load_atlas("resources/player_punch", "punching", 32, 32, 5, 1);
+        im_man.load_image("resources/player_img.png", "idle");  //Load sprite image
+        current_img = im_man.get_img("idle");
 
         //Create transform op to flip player image when turning around
         AffineTransform tf = AffineTransform.getScaleInstance(-1, 1);
@@ -114,29 +109,24 @@ public class PlayerEntity extends LivingEntity {
 
     private void stand_init() {
         state = PlayerState.STANDING;
-        current_img = im_man.get_img("player_img");
         dx = 0;
     }
 
     private void punch_init() {
         state = PlayerState.PUNCHING;
-        punching_im_man.set_current_img(0);
         punch_start = update_counter;
         dx = 0;
     }
 
     private void jump_init() {
         state = PlayerState.JUMPING;
-        jumping_im_man.set_current_img(0);
+        jump_start = update_counter;
         dy = -15;
     }
 
     private void walk_init() {
         state = PlayerState.WALKING;
-        walking_im_man.set_current_img(0);
         walk_start = update_counter;
-
-        current_img = walking_im_man.get_next_img();
         if(left_facing) {
             dx = -max_dx;
             current_img = tf_hor_flip.filter(current_img, null);  //Make sure facing right way
@@ -253,20 +243,19 @@ public class PlayerEntity extends LivingEntity {
     private void update_image() {
         switch(state) {
             case HURT:
-                current_img = im_man.get_img("player_img");  //Standing for now
-                break;
+                //current_img = im_man.update_animation("hurt", 4, update_counter);
+                //break;
             case WALKING:
-                if ((update_counter - walk_start) % walk_img_len == 0) {  //Update to next image after a set time
-                    current_img = walking_im_man.get_next_img();
-                }
+                current_img = im_man.update_animation("walking", walk_len, update_counter-walk_start);
                 break;
             case STANDING:
-                current_img = im_man.get_img("player_img");
+                current_img = im_man.get_img("idle");
                 break;
             case JUMPING:
-                current_img = im_man.get_img("player_img");  //Standing for now
+                current_img = im_man.update_animation("jumping", jump_len, update_counter-jump_start);
                 break;
             case PUNCHING:
+                current_img = im_man.update_animation("jumping", punch_len, update_counter-punch_start);
                 break;
             default:
                 break;

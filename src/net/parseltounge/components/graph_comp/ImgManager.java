@@ -4,8 +4,11 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.io.File;
+import java.lang.reflect.Array;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.net.*;
+import java.util.Arrays;
 
 public class ImgManager {
     //Loads, stores and draws images
@@ -84,15 +87,51 @@ public class ImgManager {
     }
 
     public BufferedImage get_next_img() {  //Get next image in list of images. Used for image sequences.
+        current_img_index++;
 
         if(current_img_index >= Img_srcs.size())  //If at last image, return first one
             current_img_index = 0;
 
-        BufferedImage result = Img_srcs.get(current_img_index);  //return image
+        return Img_srcs.get(current_img_index);  //return image
+    }
 
+    public BufferedImage get_atlas_subimage(String atlas, int index) {
+        String img_name = atlas + Integer.toString(index);
+        return get_img(img_name);
+    }
+
+    private boolean using_atlas(String atlas) {
+        // Make sure within series of atlas subimages by name
+        String current_img_name = get_names()[current_img_index];
+        String current_atlas_name = current_img_name.substring(0, current_img_name.length()-2);
+        return current_atlas_name.equals(atlas);
+    }
+
+    public BufferedImage get_atlas_next_subimage(String atlas) {
+        // Assume atlas subimages are in order
         current_img_index++;
+        if(current_img_index >= Img_srcs.size())  //If at last image, return first one
+            current_img_index = 0;
+        if(!using_atlas(atlas)) {
+            start_animation(atlas);
+        }
+        return Img_srcs.get(current_img_index);  //return image
+    }
 
-        return result;
+    public BufferedImage update_animation(String atlas, int delay_between_updates, int current_update) {
+        if(!using_atlas(atlas)) {
+            start_animation(atlas);
+            return get_img(current_img_index);
+        } else if(current_update % delay_between_updates == 0) {
+            return get_atlas_next_subimage(atlas);
+        } else {
+            return get_img(current_img_index);
+        }
+    }
+
+    private void start_animation(String atlas) {
+        ArrayList<String> names = new ArrayList<String>(Arrays.asList(get_names()));
+        current_img_index = names.indexOf(atlas + "_0");
     }
 
     public int get_height(String nm) {  //Get height of image 'nm'
