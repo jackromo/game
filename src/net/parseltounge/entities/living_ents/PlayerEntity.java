@@ -17,9 +17,6 @@ public class PlayerEntity extends LivingEntity {
     //current_img, x_pos, y_pos, dx, dy, and hitbox in Entity
 
     private ImgManager im_man;  //Current Image manager (see ImgManager class), stores + loads currently used images
-    private ImgManager walking_im_man;  //Manages images for walking
-    private ImgManager jumping_im_man;  //Manages images for jumping
-    private ImgManager punching_im_man;  //Manages images for jumping
 
     private enum PlayerState {
         STANDING,
@@ -67,11 +64,6 @@ public class PlayerEntity extends LivingEntity {
         left_facing = true;  //Start off facing left
 
         im_man = new ImgManager();  //Will later on simply be a reference to currently used image manager
-
-        //Initialize all image managers
-        walking_im_man = new ImgManager();
-        jumping_im_man = new ImgManager();
-        punching_im_man = new ImgManager();
 
         punch = new AttackEntity(this, 20);  //punch comes from player and deals 20 damage
         punch.get_hitbox().setBounds(x_pos, y_pos, 30, 30);  //Set size of attack
